@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  pythonproject:
+    image: pythonproject
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+  
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 1
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: 1
+    ports:
+      - 8080:80
