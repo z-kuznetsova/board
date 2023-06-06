@@ -1,17 +1,21 @@
-from datetime import date
-from django.db.models import *
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, DateTime
+from sqlalchemy.orm import declarative_base
+from datetime import datetime
 
-#pg_db = PostgresqlDatabase('board', user='root', password='1',
- #                          host='localhost', port=5432)
+engine = create_engine('postgresql://root:1@postgres/board')
 
-	
-#print("kek")
+Base = declarative_base()
 
-class User(Model):
-    id = IntegerField()
-    registration_date = DateTimeField()
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    username = Column(String(255), unique=True, nullable= True)
+    registration_date = Column(DateTime(), default=datetime.now)
+    
 
-class Board(Model):
-    text = CharField()
-    date = DateTimeField()
-    #user = ForeignKeyField(User)
+class Board(Base):
+    __tablename__ = "boards"
+    id = Column(Integer, primary_key=True)
+    text = Column(String(255), nullable= False)
+    date = Column(DateTime(), default=datetime.now)
+    user_id = Column(ForeignKey('users.id'))
